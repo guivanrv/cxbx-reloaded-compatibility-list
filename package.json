@@ -1,0 +1,17 @@
+{
+  "name": "compat-list",
+  "version": "1.0.0",
+  "description": "cxbx-reloaded compatibility list",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^0.11.1"
+  },
+  "dependencies": {
+    "marked": "^0.3.12"
+  }
+}
