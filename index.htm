@@ -14,88 +14,22 @@
 </table>
 <h2>Games total: <span id="total"></span></h2>
 <!-- generated text goes here-->
-<table id="games">
-   <thead>
-   <th>Title</th>
-   <th>State</th>
-   <th>URL</th>
-   <th>UDATA/TDATA</th>
-   <th>Last Update</th>
-   <th>Screenshots</th>
-   </thead>
-   <tbody>
-   </tbody>
-</table>
+<div id="games-table">
+   <table id="games">
+      <thead>
+      <th><button class="sort" data-sort="title">Title</button></th>
+      <th><button class="sort" data-sort="status">State</button></th>
+      <th>URL</th>
+      <th>UDATA/TDATA</th>
+      <th><button class="sort" data-sort="region">Region</button></th>
+      <th><button class="sort" data-sort="date">Last Update</button></th>
+      <th>Screenshots</th>
+      </thead>
+      <tbody class="list">
+      </tbody>
+   </table>
+</div>
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.12/marked.min.js"></script>
-<script src="script.js"></script>
-<style>
-   body, a {
-      background: #373a3c;
-      color: white;
-   }
-
-   table {
-      border: 1px solid silver;
-      width: 100%;
-   }
-
-   table td {
-      border-bottom: 1px solid silver
-   }
-
-   table#games tr:nth-child(2n) td {
-      background: #403a3a;
-   }
-
-   table#games tr:hover td {
-      background: silver;
-   }
-
-   td.status {
-      padding: 6px;
-      text-align: center;
-      border-radius: 9px;
-   }
-
-   span.tag {
-      padding: 2px 4px;
-      border-radius: 9px;
-      text-align: center;
-      margin: 2px;
-      display: inline-block;
-   }
-
-   th {
-      background: #737373;
-   }
-
-   /* got the tooltip css from a w3school lesson*/
-   .tooltip {
-      position: relative;
-      display: inline-block;
-      border-bottom: 1px dotted black;
-   }
-
-   /* Tooltip text */
-   .tooltip .tooltiptext {
-      text-align: left !important;
-      visibility: hidden;
-      width: 600px;
-      background-color: black;
-      color: #fff;
-      text-align: center;
-      padding: 5px 0;
-      border-radius: 6px;
-      right: 105%;
-      /* Position the tooltip text - see examples below! */
-      position: absolute;
-      z-index: 1;
-   }
-
-   /* Show the tooltip text when you mouse over the tooltip container */
-   .tooltip:hover .tooltiptext {
-      visibility: visible;
-   }
-</style>
+<script src="bundle.js"></script>
+<link rel="stylesheet" type="text/css" href="style.css">
 </html>
