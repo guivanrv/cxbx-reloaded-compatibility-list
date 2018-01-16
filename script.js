@@ -1,7 +1,8 @@
 // Require node-dependencies to be bundled info dependencies.js here
 const marked = require('marked'),
       moment = require('moment'),
-      List = require('list.js');
+      List = require('list.js'),
+      picoModal = require('picomodal');
 
 const url = 'https://api.github.com/repos/Cxbx-Reloaded/game-compatibility/issues?per_page=100&page=',
     // @see http://listjs.com/api/ Options section
@@ -80,6 +81,7 @@ function renderRow(i) {
     const region = regions ? regions.map(region => region.name.substring(region.name.indexOf('-') + 1)).join(',') : 'n/a';
     const udataHtml = udata ? `<a href="http://www.xbox-games.org/?srch=${udata}">${udata}</a>` : 'None';
     const date = new Date(i.updated_at);
+    const screenshotCount = i.body.split("![").length -1;
     return {
         title: title,
         status: `<span style="background:#${state.color}">${state.name.substring('state-'.length)}</span>`,
@@ -87,7 +89,7 @@ function renderRow(i) {
         udata: udataHtml,
         region: region,
         date: `${moment(date).format('DD MMM YYYY')}`,
-        tooltip: `<div class="tooltip">Hover here!<div class="tooltiptext">${marked(i.body)}</div></div>`
+        tooltip: `<button class="popup" data-id="${i.id}">Open (${screenshotCount || "None"})</button>`
     }
 }
 
@@ -122,7 +124,7 @@ function populateList(data) {
     const values = data.map(renderRow.bind(allStates))
     let gamesList = new List('games-table', listOptions, values);
     const sortBtn = document.querySelector('.date-sort');
-    sortBtn.addEventListener('click', function(){
+    sortBtn.addEventListener('click', function() {
         sortBtn.direction = sortBtn.direction || "asc";
         gamesList.sort('date', {
             sortFunction: function(a,b){
@@ -133,6 +135,17 @@ function populateList(data) {
             }
         });
         sortBtn.direction = "asc" === sortBtn.direction ? "desc" : "asc";   
+    });
+    document.querySelector('#games-table').addEventListener('click', (e)=>{
+        const target = e.target;
+        if (target && target.attributes.hasOwnProperty('data-id')){
+            const id = Number(target.attributes["data-id"].nodeValue);
+            // this closure is gonna leak a lot :(
+            const modalHtml = marked(data.find(i=>id === i.id).body);
+             picoModal(modalHtml)
+             .afterClose(function (modal) { modal.destroy(); })
+             .show();
+        }
     });
     return allStates;
 }
