@@ -1,6 +1,7 @@
 // Require node-dependencies to be bundled info dependencies.js here
 const marked = require('marked'),
-    List = require('list.js');
+      moment = require('moment'),
+      List = require('list.js');
 
 const url = 'https://api.github.com/repos/Cxbx-Reloaded/game-compatibility/issues?per_page=100&page=',
     // @see http://listjs.com/api/ Options section
@@ -85,7 +86,7 @@ function renderRow(i) {
         navigate: `<a target="_blank" href="${i.url.replace('api.', '').replace('repos/', '')}">Navigate</a>`,
         udata: udataHtml,
         region: region,
-        date: `${date.getDay() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`,
+        date: `${moment(date).format('DD MMM YYYY')}`,
         tooltip: `<div class="tooltip">Hover here!<div class="tooltiptext">${marked(i.body)}</div></div>`
     }
 }
@@ -120,6 +121,19 @@ function populateList(data) {
     let allStates = {};
     const values = data.map(renderRow.bind(allStates))
     let gamesList = new List('games-table', listOptions, values);
+    const sortBtn = document.querySelector('.date-sort');
+    sortBtn.addEventListener('click', function(){
+        sortBtn.direction = sortBtn.direction || "asc";
+        gamesList.sort('date', {
+            sortFunction: function(a,b){
+                const dateA = moment(a.values().date);
+                const dateB = moment(b.values().date);
+                const direction = "asc" ===sortBtn.direction ? 1 : -1;
+                return dateA.diff(dateB, 'seconds') * direction;
+            }
+        });
+        sortBtn.direction = "asc" === sortBtn.direction ? "desc" : "asc";   
+    });
     return allStates;
 }
 
